@@ -1,5 +1,8 @@
 Revision history for Test-Dirs
 
+0.02    25 Jun 2010
+    - added dir_cleanup_ok()
+
 0.01    Date/time
         First version, released on an unsuspecting world.
 

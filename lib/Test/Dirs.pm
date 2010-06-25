@@ -40,17 +40,21 @@ structure via making a temporary copy of a initial folder state. Calling
 module or a program to manipulate files inside this temporary folder and
 then comparing it to a desired folder state.
 
+In addition there is a L</dir_cleanup_ok> function that can be used to
+completely remove folder structures that are not important for comparing.
+
 =cut
 
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use base 'Exporter';
 our @EXPORT = qw(
     temp_copy_ok
     is_dir
+    dir_cleanup_ok
 );
 
 use File::Temp;
@@ -60,6 +64,8 @@ use Carp 'confess';
 use File::DirCompare;
 use List::MoreUtils 'any';
 use Text::Diff 'diff';
+use Path::Class;
+use File::Path 'remove_tree';
 
 our $test = Test::Builder->new;
 
@@ -67,6 +73,7 @@ our $test = Test::Builder->new;
 
     temp_copy_ok()
     is_dir()
+    dir_cleanup_ok()
 
 =head1 FUNCTIONS
 
@@ -155,6 +162,50 @@ sub is_dir {
 	foreach my $difference (@differences) {
 		$test->diag($difference);
 	}
+}
+
+=head2 dir_cleanup_ok($filename, [$message])
+
+If the C<$filename> is a folder. Removes this folder and all empty
+folders upwards.
+
+If the C<$filename> is a file. Removes parent folder of this file and all empty
+folders upwards.
+
+PS: Just be careful :-)
+
+=cut
+
+sub dir_cleanup_ok {
+	my $filename = shift or confess 'pass filename as argument';
+	my $message  = shift;
+
+	$filename    = File::Spec->catfile(@{$filename})
+		if (ref $filename eq 'ARRAY');
+	if (-f $filename) {
+		$filename = file($filename)->dir->stringify;
+	}
+	
+	$message ||= 'cleaning up '.$filename.' folder and all empty folders up';
+	
+	my $removed_filenames;
+	my $rm_err;
+	remove_tree($filename, {result => \$removed_filenames, keep_root => 1, error => \$rm_err});
+	if (@{$rm_err}) {
+		$test->ok(0, $message);
+		$test->diag("Error:\n", @{$rm_err});
+		return;
+	}
+	@{$removed_filenames} = map { File::Spec->catfile($filename, $_)."\n" } @{$removed_filenames};
+	
+	# remove the file folder and all empty folders upwards
+	while (rmdir $filename) {
+		push @{$removed_filenames}, $filename."\n";
+		$filename = file($filename)->parent->stringify;
+	}
+
+	$test->ok(1, $message);
+	$test->diag("Removed:\n", @{$removed_filenames});
 }
 
 

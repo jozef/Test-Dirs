@@ -22,6 +22,8 @@ my $builder = Module::Build->new(
         'File::DirCompare' => 0,
         'List::MoreUtils'  => 0,
         'Text::Diff'       => 0,
+        'Path::Class'      => 0,
+        'File::Path'       => 0,
     },
     script_files => [
     ],

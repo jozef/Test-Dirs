@@ -35,9 +35,14 @@ DESCRIPTION
     Calling module or a program to manipulate files inside this temporary
     folder and then comparing it to a desired folder state.
 
+    In addition there is a dir_cleanup_ok function that can be used to
+    completely remove folder structures that are not important for
+    comparing.
+
 EXPORTS
         temp_copy_ok()
         is_dir()
+        dir_cleanup_ok()
 
 FUNCTIONS
   temp_copy_ok($src_dir, [$message])
@@ -49,6 +54,15 @@ FUNCTIONS
     Compares `$dir1' with `$dir2'. Files that has to be ignored (are not
     important) can be specified as `@ignore_files'. The filenames are
     relative to the `$dir1(2)' folders.
+
+  dir_cleanup_ok($filename, [$message])
+    If the `$filename' is a folder. Removes this folder and all empty
+    folders upwards.
+
+    If the `$filename' is a file. Removes parent folder of this file and all
+    empty folders upwards.
+
+    PS: Just be careful :-)
 
 SEE ALSO
     File::DirCompare, File::Copy::Recursive, File::Temp
