@@ -48,7 +48,7 @@ completely remove folder structures that are not important for comparing.
 use warnings;
 use strict;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use base 'Exporter';
 our @EXPORT = qw(
@@ -65,7 +65,7 @@ use File::DirCompare;
 use List::MoreUtils 'any';
 use Text::Diff 'diff';
 use Path::Class;
-use File::Path 'remove_tree';
+use File::Path 2.07 'remove_tree';
 
 our $test = Test::Builder->new;
 

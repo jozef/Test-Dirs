@@ -23,7 +23,7 @@ my $builder = Module::Build->new(
         'List::MoreUtils'  => 0,
         'Text::Diff'       => 0,
         'Path::Class'      => 0,
-        'File::Path'       => 0,
+        'File::Path'       => 2.07,    # remove_tree() added
     },
     script_files => [
     ],
