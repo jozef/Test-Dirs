@@ -14,7 +14,7 @@ my $builder = Module::Build->new(
         'File::is'     => 0,
     },
     requires => {
-        'File::Temp'       => 0,
+        'File::Temp'       => 0.19,    # tempdir() added
         'File::DirCompare' => 0,
         'Test::Builder'    => 0,
         'File::Copy::Recursive' => 0,
