@@ -13,6 +13,9 @@ my $builder = Module::Build->new(
         'Test::Tester' => 0,
         'File::is'     => 0,
     },
+    configure_requires => {
+        'Module::Build' => '0.3607',
+    },
     requires => {
         'File::Temp'       => 0.19,    # tempdir() added
         'File::DirCompare' => 0,
@@ -28,8 +31,6 @@ my $builder = Module::Build->new(
     script_files => [
     ],
     add_to_cleanup => [ 'Test-Dirs-*' ],
-    create_readme  => 1,
-    sign           => 1,
     meta_merge => {
         resources => {
             repository => 'http://github.com/jozef/Test-Dirs/',
