@@ -77,7 +77,7 @@ sub is_dir {
 					push @differences, 'in '.$dir1.' is a directory while in '.$dir2.' is a regular file';
 				}
 				else {
-					push @differences, diff($a, $b);
+					push @differences, diff($b, $a);
 				}
 			}
 		}
@@ -190,11 +190,13 @@ returning L<File::Temp::Dir> object. This object will stringify to a
 path and when destroyed (will leave the scope) folder is automatically
 deleted.
 
-=head2 is_dir($dir1, $dir2, [$message, \@ignore_files, $verbose])
+=head2 is_dir($is_dir, $expected_dir, [$message, \@ignore_files, $verbose])
 
-Compares C<$dir1> with C<$dir2>. Files that has to be ignored (are not important)
+Compares C<$is_dir> with C<$expected_dir>. Files that has to be ignored (are not important)
 can be specified as C<@ignore_files>. The filenames are relative to the C<$dir1(2)>
 folders.
+
+C<$verbose> will output unified diff between C<$expected_dir> and C<$is_dir>.
 
 =head2 dir_cleanup_ok($filename, [$message])
 
