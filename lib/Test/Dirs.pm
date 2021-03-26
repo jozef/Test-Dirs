@@ -138,7 +138,7 @@ sub dir_cleanup_ok {
 }
 
 
-'A car is not merly a faster horse.';
+'A car is not merely a faster horse.';
 
 
 __END__
@@ -194,14 +194,16 @@ completely remove folder structures that are not important for comparing.
 
 =head1 FUNCTIONS
 
-=head2 temp_copy_ok($src_dir, [$message])
+=head2 temp_copy_ok($src_dir, $message)
 
 Will recursively copy C<$src_dir> to a L<File::Temp/newdir> folder and
 returning L<File::Temp::Dir> object. This object will stringify to a
 path and when destroyed (will leave the scope) folder is automatically
 deleted.
 
-=head2 is_dir($is_dir, $expected_dir, [$message, \@ignore_files, $verbose])
+C<$message> is optional.
+
+=head2 is_dir($is_dir, $expected_dir, $message, \@ignore_files, $verbose)
 
 Compares C<$is_dir> with C<$expected_dir>. Files that has to be ignored (are not important)
 can be specified as C<@ignore_files>. The filenames are relative to the C<$dir1(2)>
@@ -211,15 +213,19 @@ C<$verbose> will output unified diff between C<$expected_dir> and C<$is_dir>.
 
 Setting C<FIXIT> env to true will make this function copy C<$is_dir> folder
 content into C<$expected_dir>. Usefull for bootstraping test results or for
-acnkowledgind results after code update.
+acnkowledging results after code update.
 
-=head2 dir_cleanup_ok($filename, [$message])
+C<$message>, C<\@ignore_files>, C<$verbose> are optional.
+
+=head2 dir_cleanup_ok($filename, $message)
 
 If the C<$filename> is a folder. Removes this folder and all empty
 folders upwards.
 
 If the C<$filename> is a file. Removes parent folder of this file and all empty
 folders upwards.
+
+C<$message> is optional.
 
 PS: Just be careful :-)
 
