@@ -47,7 +47,18 @@ sub is_dir {
 	my $message = shift || 'cmp '.$dir1.' with '.$dir2;
 	my $ignore_ref = shift || [];
 	my $verbose = shift;
-	
+
+	if ( $ENV{FIXIT} ) {
+		dircopy( $dir1, $dir2 )
+			or die 'failed to copy '
+			. $dir1
+			. ' to temp folder '
+			. $dir2 . ' '
+			. $!;
+		$test->ok( 1, 'FIXIT: ' . $message );
+		return;
+	}
+
 	my @ignore_files = @{$ignore_ref};
 	my @differences;
 	File::DirCompare->compare($dir1, $dir2, sub {
@@ -197,6 +208,10 @@ can be specified as C<@ignore_files>. The filenames are relative to the C<$dir1(
 folders.
 
 C<$verbose> will output unified diff between C<$expected_dir> and C<$is_dir>.
+
+Setting C<FIXIT> env to true will make this function copy C<$is_dir> folder
+content into C<$expected_dir>. Usefull for bootstraping test results or for
+acnkowledgind results after code update.
 
 =head2 dir_cleanup_ok($filename, [$message])
 
