@@ -59,6 +59,13 @@ sub is_dir {
 		return;
 	}
 
+	my $have_two_folders = -d $dir1 && -d $dir2;
+	unless ($have_two_folders) {
+		$test->ok( -d $dir2, 'expected-param "' . $dir2 . '" is directory' );
+		$test->ok( -d $dir1, 'is-param "' . $dir1 . '" is directory' );
+		return;
+	}
+
 	my @ignore_files = @{$ignore_ref};
 	my @differences;
 	File::DirCompare->compare($dir1, $dir2, sub {

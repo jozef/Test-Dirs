@@ -1,6 +1,9 @@
 Revision history for Test-Dirs
 
-0.05    2021
+0.06    2021
+    - is_dir() checks if two directories are being compared
+
+0.05    26 March 2021
     - is_dir/ vs expected_dir/ unified diff in Test::More standard order
     - add FIXIT env option to acknowledge new/updated test folder results
 
