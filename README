@@ -73,7 +73,7 @@ FUNCTIONS
     for acnkowledging results after code update.
 
     $message, \@ignore_files, $verbose are optional. Default verbose value
-    is $Test::Harness::Verbose.
+    is $ENV{TEST_VERBOSE}.
 
  dir_cleanup_ok($filename, $message)
 

@@ -3,7 +3,7 @@ package Test::Dirs;
 use warnings;
 use strict;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use base 'Exporter';
 our @EXPORT = qw(
@@ -21,7 +21,6 @@ use List::MoreUtils 'any';
 use Text::Diff 'diff';
 use Path::Class;
 use File::Path 2.07 'remove_tree';
-use Test::Harness;
 
 our $test = Test::Builder->new;
 
@@ -49,7 +48,7 @@ sub is_dir {
 	my $ignore_ref = shift || [];
 	my $verbose = shift;
 
-	$verbose = $Test::Harness::Verbose
+	$verbose = $ENV{TEST_VERBOSE}
 		unless defined($verbose);
 
 	if ( $ENV{FIXIT} ) {
@@ -227,7 +226,7 @@ content into C<$expected_dir>. Usefull for bootstraping test results or for
 acnkowledging results after code update.
 
 C<$message>, C<\@ignore_files>, C<$verbose> are optional.
-Default verbose value is C<$Test::Harness::Verbose>.
+Default verbose value is C<$ENV{TEST_VERBOSE}>.
 
 =head2 dir_cleanup_ok($filename, $message)
 
