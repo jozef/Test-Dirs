@@ -3,7 +3,7 @@ package Test::Dirs;
 use warnings;
 use strict;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use base 'Exporter';
 our @EXPORT = qw(
@@ -21,6 +21,7 @@ use List::MoreUtils 'any';
 use Text::Diff 'diff';
 use Path::Class;
 use File::Path 2.07 'remove_tree';
+use Test::Harness;
 
 our $test = Test::Builder->new;
 
@@ -47,6 +48,9 @@ sub is_dir {
 	my $message = shift || 'cmp '.$dir1.' with '.$dir2;
 	my $ignore_ref = shift || [];
 	my $verbose = shift;
+
+	$verbose = $Test::Harness::Verbose
+		unless defined($verbose);
 
 	if ( $ENV{FIXIT} ) {
 		dircopy( $dir1, $dir2 )
@@ -175,7 +179,7 @@ Test::Dirs - easily copy and compare folders inside tests
 		is_dir($src_dir, $tmp_dir, 'fails without @ignore_files');
 	};
 	
-	# be verbose, print out the diff if doesn't match
+	# force verbose, print out the diff if doesn't match
 	is_dir($src_dir, $tmp_dir, 'test with verbose on', \@ignore_files, 'verbose');
 	
 =head1 DESCRIPTION
@@ -223,6 +227,7 @@ content into C<$expected_dir>. Usefull for bootstraping test results or for
 acnkowledging results after code update.
 
 C<$message>, C<\@ignore_files>, C<$verbose> are optional.
+Default verbose value is C<$Test::Harness::Verbose>.
 
 =head2 dir_cleanup_ok($filename, $message)
 
